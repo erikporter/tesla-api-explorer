@@ -1,0 +1,19 @@
+﻿@page "/vehicles/{vehicleId:long}"
+@model VehicleModel
+
+<div class="container">
+    <h1 class="display-4">@Model.Vehicle.DisplayName</h1>
+    <p><a asp-page="/VehicleData" asp-route-vehicleId="@Model.Vehicle.Id" class="btn btn-outline-primary">Data</a></p>
+    <p><a asp-page="/VehicleNearbyChargingSites" asp-route-vehicleId="@Model.Vehicle.Id" class="btn btn-outline-primary">Nearby Charging Sites</a></p>
+    <h4>VIN</h4>
+    <p>@Model.Vehicle.Vin</p>
+    <h4>State</h4>
+    <p>@Model.Vehicle.State</p>
+    <h4>Option Codes</h4>
+    <div data-spy="scroll" data-offset="0">
+        @foreach (var optionCode in Model.Vehicle.OptionCodes.Split(','))
+        {
+            <p>@optionCode</p>
+        }
+    </div>
+</div>
