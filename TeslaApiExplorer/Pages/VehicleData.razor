@@ -1,0 +1,54 @@
+﻿@page "/vehicles/{vehicleId:long}/data"
+@inherits TeslaComponentBase
+@using System.Text.Json
+
+<h1>@(vehicleData?.DisplayName ?? "Vehicle")</h1>
+
+@if (vehicleData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <Tabs>
+        <Tab Text="Drive">
+            <pre>@JsonSerializer.Serialize(vehicleData.DriveState, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+        <Tab Text="Climate">
+            <pre>@JsonSerializer.Serialize(vehicleData.ClimateState, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+        <Tab Text="Charge">
+            <pre>@JsonSerializer.Serialize(vehicleData.ChargeState, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+        <Tab Text="Vehicle">
+            <pre>@JsonSerializer.Serialize(vehicleData.VehicleState, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+        <Tab Text="GUI">
+            <pre>@JsonSerializer.Serialize(vehicleData.GuiSettings, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+        <Tab Text="Config">
+            <pre>@JsonSerializer.Serialize(vehicleData.VehicleConfig, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </Tab>
+    </Tabs>
+}
+
+@code {
+    private TeslaVehicleData vehicleData;
+    private string mobileEnabled;
+
+    [Parameter]
+    public long VehicleId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicleData = await TeslaService.GetVehicleDataAsync(Authorization, VehicleId);
+
+        var mobileEnabledValue = await TeslaService.GetVehicleMobileEnabledAsync(Authorization, VehicleId);
+        if (mobileEnabledValue == null)
+            mobileEnabled = "Unknown";
+        else if (mobileEnabledValue.Value)
+            mobileEnabled = "Yes";
+        else
+            mobileEnabled = "No";
+    }
+}

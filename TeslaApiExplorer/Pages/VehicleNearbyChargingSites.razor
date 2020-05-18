@@ -1,0 +1,27 @@
+﻿@page "/vehicles/{vehicleId:long}/nearby-charging-sites"
+@inherits TeslaComponentBase
+
+<h1>Nearby Charging Sites</h1>
+
+@if (vehicleNearbyChargingSites == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <pre>
+@System.Text.Json.JsonSerializer.Serialize(vehicleNearbyChargingSites, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })
+    </pre>
+}
+
+@code {
+    private TeslaVehicleNearbyChargingSites vehicleNearbyChargingSites;
+
+    [Parameter]
+    public long VehicleId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicleNearbyChargingSites = await TeslaService.GetVehicleNearbyChargingSitesAsync(Authorization, VehicleId);
+    }
+}

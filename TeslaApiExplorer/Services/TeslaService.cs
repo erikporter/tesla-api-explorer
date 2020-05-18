@@ -27,11 +27,11 @@ namespace TeslaApiExplorer.Services
             return result.Content;
         }
 
-        public async Task<TeslaAuthorization> GetAuthorizationAsync() =>
-            await storageService.GetAsync<TeslaAuthorization>(authorizationFileName);
+        public TeslaAuthorization GetAuthorization() =>
+            storageService.Get<TeslaAuthorization>(authorizationFileName);
 
-        public Task SaveAuthorizationAsync(TeslaAuthorization authorization) =>
-            storageService.SaveAsync(authorizationFileName, authorization);
+        public void SaveAuthorization(TeslaAuthorization authorization) =>
+            storageService.Save(authorizationFileName, authorization);
 
         public async Task<IEnumerable<TeslaVehicle>> GetVehiclesAsync(TeslaAuthorization authorization)
         {
@@ -39,7 +39,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return Enumerable.Empty<TeslaVehicle>();
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicle> GetVehicleAsync(TeslaAuthorization authorization, long vehicleId)
@@ -48,7 +48,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleData> GetVehicleDataAsync(TeslaAuthorization authorization, long vehicleId)
@@ -57,7 +57,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataChargeState> GetVehicleDataChargeStateAsync(TeslaAuthorization authorization, long vehicleId)
@@ -66,7 +66,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataClimateState> GetVehicleDataClimateStateAsync(TeslaAuthorization authorization, long vehicleId)
@@ -75,7 +75,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataDriveState> GetVehicleDataDriveStateAsync(TeslaAuthorization authorization, long vehicleId)
@@ -84,7 +84,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataGuiSettings> GetVehicleDataGuiSettingsAsync(TeslaAuthorization authorization, long vehicleId)
@@ -93,7 +93,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataVehicleState> GetVehicleDataVehicleStateAsync(TeslaAuthorization authorization, long vehicleId)
@@ -102,7 +102,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleDataVehicleConfig> GetVehicleDataVehicleConfigAsync(TeslaAuthorization authorization, long vehicleId)
@@ -111,7 +111,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<bool?> GetVehicleMobileEnabledAsync(TeslaAuthorization authorization, long vehicleId)
@@ -120,7 +120,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
 
         public async Task<TeslaVehicleNearbyChargingSites> GetVehicleNearbyChargingSitesAsync(TeslaAuthorization authorization, long vehicleId)
@@ -129,7 +129,7 @@ namespace TeslaApiExplorer.Services
             if (!string.IsNullOrEmpty(result.Error))
                 return null;
 
-            return result.Content.Response;
+            return result.Content?.Response;
         }
     }
 }

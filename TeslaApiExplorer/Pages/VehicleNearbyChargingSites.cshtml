@@ -1,9 +1,0 @@
-﻿@page "/vehicles/{vehicleId:long}/nearby-charging-sites"
-@model VehicleNearbyChargingSitesModel
-
-<div class="container">
-    <h1 class="display-4">Nearby Charging Sites</h1>
-    <pre>
-@System.Text.Json.JsonSerializer.Serialize(Model.VehicleNearbyChargingSites, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })
-    </pre>
-</div>

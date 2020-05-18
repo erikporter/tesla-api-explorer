@@ -1,0 +1,43 @@
+﻿@page "/login"
+
+@inject TeslaService TeslaService
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@login" OnValidSubmit="HandleValidSubmitAsync" class="form-signin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <h1 class="h3 mb-3 font-weight-normal">Login to Tesla</h1>
+    <label for="email" class="sr-only">Email</label>
+    <InputText id="email" @bind-Value="@login.Email" class="form-control" placeholder="Email" autofocus />
+
+    <label for="password" class="sr-only">Password</label>
+    <InputText id="password" @bind-Value="@login.Password" type="password" class="form-control" placeholder="Password" />
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginInfo login = new LoginInfo();
+
+    private async Task HandleValidSubmitAsync()
+    {
+        var authorization = await TeslaService.GetAuthorizationAsync(login.Email, login.Password);
+        if (authorization == null)
+        {
+            return;
+        }
+
+        TeslaService.SaveAuthorization(authorization);
+
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var redirect = "";
+
+        if (Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query).TryGetValue("redirect", out var param))
+        {
+            redirect = param.First();
+        }
+
+        NavigationManager.NavigateTo(redirect);
+    }
+}

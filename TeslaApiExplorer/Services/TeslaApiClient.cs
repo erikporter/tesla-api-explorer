@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TeslaApiExplorer.Extensions;
@@ -75,9 +74,7 @@ namespace TeslaApiExplorer.Services
             var response = await client.SendAsync(HttpMethod.Post, url, content: request);
 
             if (!response.IsSuccessStatusCode)
-            {
                 return new TeslaApiResult<TeslaAuthorization> { Error = await response.Content.ReadAsStringAsync() };
-            }
 
             var responseContent = await JsonSerializer.DeserializeAsync<TeslaAuthorization>(await response.Content.ReadAsStreamAsync());
 
@@ -86,12 +83,13 @@ namespace TeslaApiExplorer.Services
 
         private async Task<TeslaApiResult<T>> GetAsync<T>(string url, TeslaAuthorization authorization)
         {
+            if (authorization == null)
+                return new TeslaApiResult<T>();
+
             var response = await client.SendAsync(HttpMethod.Get, url, authorization: authorization);
 
             if (!response.IsSuccessStatusCode)
-            {
                 return new TeslaApiResult<T> { Error = await response.Content.ReadAsStringAsync() };
-            }
 
             return new TeslaApiResult<T> { Content = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync()) };
         }

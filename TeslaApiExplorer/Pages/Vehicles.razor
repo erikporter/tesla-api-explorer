@@ -1,0 +1,54 @@
+﻿@page "/vehicles"
+@inherits TeslaComponentBase
+
+<h1>Vehicles</h1>
+
+@if (vehicles == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">VIN</th>
+                <th scope="col">Name</th>
+                <th scope="col">Color</th>
+                <th scope="col">State</th>
+                <th scope="col">API Version</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicle in vehicles)
+            {
+                <tr class="clickable-row" @onclick="@(() => HandleRowClick(vehicle))">
+                    <th scope="row">@vehicle.Id</th>
+                    <td>@vehicle.VehicleId</td>
+                    <td>@vehicle.Vin</td>
+                    <td>@vehicle.DisplayName</td>
+                    <td>@vehicle.Color</td>
+                    <td>@vehicle.State</td>
+                    <td>@vehicle.ApiVersion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    private IEnumerable<TeslaVehicle> vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicles = await TeslaService.GetVehiclesAsync(Authorization);
+    }
+
+    protected void HandleRowClick(TeslaVehicle vehicle)
+    {
+        NavigationManager.NavigateTo($"/vehicles/{vehicle.Id}");
+    }
+}

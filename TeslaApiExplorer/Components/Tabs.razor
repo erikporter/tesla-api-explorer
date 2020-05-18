@@ -1,0 +1,50 @@
+﻿<CascadingValue Value="this">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            @foreach (var tab in tabs)
+            {
+                var name = tab.GetName();
+                <a
+                    href="#"
+                    id="nav-@name-tab"
+                    class="nav-item nav-link @GetIsActiveClass(tab)"
+                    data-toggle="tab"
+                    role="tab"
+                    aria-controls="nav-@name"
+                    aria-selected="@GetIsActive(tab).ToString().ToLower()"
+                    @onclick=@(() => ActivateContent(tab))
+                    @onclick:preventDefault>
+                    @tab.Text
+                </a>
+            }
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    private List<Tab> tabs = new List<Tab>();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public Tab ActiveTab { get; set; }
+
+    internal void AddContent(Tab tab)
+    {
+        tabs.Add(tab);
+
+        if (tabs.Count == 1)
+            ActiveTab = tab;
+
+        StateHasChanged();
+    }
+
+    private bool GetIsActive(Tab tab) => tab == ActiveTab;
+
+    private string GetIsActiveClass(Tab tab) => GetIsActive(tab) ? "active" : null;
+
+    private void ActivateContent(Tab tab) => ActiveTab = tab;
+}

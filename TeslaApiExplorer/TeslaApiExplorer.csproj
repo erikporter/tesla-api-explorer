@@ -2,14 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>ec0faa18-91cb-43df-96ed-150aa0e725f5</UserSecretsId>
-    <AssemblyName>TeslaApiExplorer</AssemblyName>
-    <RootNamespace>TeslaApiExplorer</RootNamespace>
+    <UserSecretsId>0c0ac0fe-0920-4e97-ba74-35902cf33343</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

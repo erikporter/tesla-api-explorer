@@ -1,0 +1,30 @@
+﻿@if (Parent.ActiveTab == this)
+{
+    var name = GetName();
+    <div class="tab-pane fade show active" id="nav-@name" role="tabpanel" aria-labelledby="nav-@name-tab">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private Tabs Parent { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    public string GetName() => Text.Trim(' ').Replace(" ", "-").ToLower();
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new ArgumentNullException(nameof(Parent), "TabContent must exist within a Tabs component");
+
+        base.OnInitialized();
+
+        Parent.AddContent(this);
+    }
+}

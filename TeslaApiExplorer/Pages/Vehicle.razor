@@ -1,0 +1,34 @@
+﻿@page "/vehicles/{vehicleId:long}"
+@inherits TeslaComponentBase
+
+<h1>@(vehicle?.DisplayName ?? "Vehicle")</h1>
+
+@if (vehicle == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p><NavLink href="@($"vehicles/{VehicleId}/data")" class="btn btn-outline-primary">Data</NavLink></p>
+    <p><NavLink href="@($"vehicles/{VehicleId}/nearby-charging-sites")" class="btn btn-outline-primary">Nearby Charging Sites</NavLink></p>
+    <h4>VIN</h4>
+    <p>@vehicle.Vin</p>
+    <h4>State</h4>
+    <p>@vehicle.State</p>
+    <h4>Option Codes</h4>
+    <div data-spy="scroll" data-offset="0">
+        <p>@string.Join(", ", vehicle.OptionCodes.Split(','))</p>
+    </div>
+}
+
+@code {
+    private TeslaVehicle vehicle;
+
+    [Parameter]
+    public long VehicleId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicle = await TeslaService.GetVehicleAsync(Authorization, VehicleId);
+    }
+}
